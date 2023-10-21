@@ -1,17 +1,3 @@
-var grassArr = [];
-var GrassEat = [];
-var Pred = [];
-var mah = [];
-var hska = [];
-var m = 50;
-var matrix = [];
-for (var y = 0; y < m; y++) {
-    matrix[y] = [];
-    for (var x = 0; x < m; x++) {
-        var n = Math.floor(Math.random() * 6);
-        matrix[y][x] = n;
-    }
-}
 // var matrix = [
 //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -54,43 +40,22 @@ for (var y = 0; y < m; y++) {
 //    [1, 1, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0]
 // ];
 
+var socket = io();
+var matrix = [];
 var side = 30;
 
 
 function setup() {
     frameRate(1000);
-    createCanvas(matrix[0].length * side, matrix.length * side);
+    createCanvas(matrix.length * side, matrix.length * side);
     background('#acacac');
-
-    for (var y = 0; y < matrix.length; y++) {
-        for (var x = 0; x < matrix[y].length; x++) {
-            if (matrix[y][x] == 1) {
-                var gr = new Grass(x, y);
-                grassArr.push(gr);
-            } else if (matrix[y][x] == 2) {
-                var ge = new GrassEater(x, y);
-                GrassEat.push(ge);
-            } else if (matrix[y][x] == 3) {
-                var pr = new Predator(x, y);
-                Pred.push(pr);
-            } else if (matrix[y][x] == 4) {
-                var mh = new Mah(x, y);
-                mah.push(mh);
-            } else if (matrix[y][x] == 5) {
-                var hsk = new Hska(x, y);
-                hska.push(hsk);
-            }
-        }
-    }
 }
 
-
-
-function draw() {
+function draw(m) {
+    matrix = m;
 
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
-
             if (matrix[y][x] == 1) {
                 fill("green");
                 rect(x * side, y * side, side, side);
@@ -112,22 +77,12 @@ function draw() {
             }
         }
     }
-
-    for (var i in grassArr) {
-        grassArr[i].mul();
-    }
-    for (var i in GrassEat) {
-        GrassEat[i].eat();
-    }
-    for (var i in Pred) {
-        Pred[i].eat();
-    }
-    for (var i in mah) {
-        mah[i].eat();
-    }
-    for (var i in hska) {
-        hska[i].eat();
-    }
-
-
 }
+
+socket.on("MATRIX", (m) => {
+    matrix = m;
+})
+
+socket.on("MATRIX", (m) => {
+    draw(m);
+})

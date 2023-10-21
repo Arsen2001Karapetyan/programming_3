@@ -1,4 +1,7 @@
-class Mah extends LivingCreature {
+var LivingCreature = require("./LivingCreature");
+var random = require("./random");
+
+module.exports = class Mah extends LivingCreature {
     constructor(x, y) {
         super(x, y);
         this.energy = 5;

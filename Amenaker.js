@@ -1,4 +1,7 @@
-class Hska extends LivingCreature {
+var LivingCreature = require("./LivingCreature");
+var random = require("./random");
+
+module.exports = class Amenaker extends LivingCreature {
     constructor(x, y) {
         super(x, y);
         this.energy = 5;
@@ -50,9 +53,9 @@ class Hska extends LivingCreature {
             this.x = newCell[0];
             this.y = newCell[1];
             if (this.energy <= 0) {
-                for (var i in hska) {
-                    if (hska[i].x == this.x && hska[i].y == this.y) {
-                        hska.splice(i, 1);
+                for (var i in amen) {
+                    if (amen[i].x == this.x && amen[i].y == this.y) {
+                        amen.splice(i, 1);
                         matrix[this.y][this.x] = 0;
                         break;
                     }
@@ -82,7 +85,7 @@ class Hska extends LivingCreature {
                 }
             }
             if (this.energy == 7) {
-                hska.push(new Hska(this.x, this.y));
+                amen.push(new Amenaker(this.x, this.y));
             } else {
                 this.energy++
             };

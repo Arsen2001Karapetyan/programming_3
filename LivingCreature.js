@@ -1,4 +1,6 @@
-class LivingCreature {
+var random = require("./random");
+
+module.exports = class LivingCreature {
     constructor (x, y) {
         this.x = x;
         this.y = y;

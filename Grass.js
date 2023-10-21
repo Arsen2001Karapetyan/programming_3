@@ -1,4 +1,7 @@
-class Grass extends LivingCreature {
+var LivingCreature = require("./LivingCreature");
+var random = require("./random");
+
+module.exports = class Grass extends LivingCreature {
     constructor(x, y) {
         super(x, y);
         this.multiply = 0;
@@ -18,5 +21,4 @@ class Grass extends LivingCreature {
             this.multiply = 0;
         }
     }
-
 }
