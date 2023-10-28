@@ -1,6 +1,5 @@
 var express = require("express");
 var random = require("./random")
-var LivingCreature = require("./LivingCreature");
 
 var app = express();
 var server = require('http').Server(app);
@@ -21,6 +20,7 @@ var GrassEater = require("./Grasseater");
 var Predator = require("./Predator");
 var Mah = require("./Mah");
 var Amenaker = require("./Amenaker");
+var Fish = require("./Fish")
 
 grassArr = [];
 GrassEat = [];
@@ -28,38 +28,38 @@ Pred = [];
 mah = [];
 amen = [];
 matrix = [];
-
-var m = 50;
+fsh = [];
+var m =50
 var sideX = 70;
 var sideY = 35;
 function CreateMatrix() {
-    // for (var y = 0; y < m; y++) {
-    //     matrix[y] = [];
-    //     for (var x = 0; x < m; x++) {
-    //         var n = Math.floor(Math.random() * 6);
-    //         matrix[y][x] = n;
+    for (var y = 0; y < m; y++) {
+        matrix[y] = [];
+        for (var x = 0; x < m; x++) {
+            var n = Math.floor(Math.random() * 7);
+            matrix[y][x] = n;
+        }
+    }
+
+    // for (let i = 0; i < sideX; i++) {
+    //     matrix.push([])
+    //     for (let j = 0; j < sideY; j++) {
+    //         matrix[i].push(0)
     //     }
     // }
 
-    for (let i = 0; i < sideX; i++) {
-        matrix.push([])
-        for (let j = 0; j < sideY; j++) {
-        matrix[i].push(0)
-        }
-        }
-        
-        function character(char, qantity) {
-        for (let i = 0; i < qantity; i++) {
-        var x = Math.floor(random(sideX));
-        var y = Math.floor(random(sideY))
-        matrix[x][y] = char;
-        }
-        }
-        
-        character(1, 400);
-        character(2, 150);
-        character(3, 1);
-        character(4, 2);
+    // function character(char, qantity) {
+    //     for (let i = 0; i < qantity; i++) {
+    //         var x = Math.floor(random(sideX));
+    //         var y = Math.floor(random(sideY))
+    //         matrix[x][y] = char;
+    //     }
+    // }
+
+    // character(1, 400);
+    // character(2, 150);
+    // character(3, 1);
+    // character(4, 2);
 
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
@@ -79,11 +79,15 @@ function CreateMatrix() {
                 var amn = new Amenaker(x, y);
                 amen.push(amn);
             }
+            // else if (matrix[y][x] == 6) {
+            //     var fisho = new Fish(x, y);
+            //     fsh.push(fisho);
+            // }
         }
     }
 }
 
-CreateMatrix();
+
 
 function PlayGame() {
     for (var i in grassArr) {
@@ -101,11 +105,21 @@ function PlayGame() {
     for (var i in amen) {
         amen[i].eat();
     }
+    for (var i in fsh) {
+        fsh[i].getwet();
+    }
 
     io.emit("MATRIX", matrix);
 }
 
-setInterval(function () {
-    PlayGame();
-}, 1000);
 
+
+
+
+io.on('connection', function (socket) {
+    CreateMatrix();
+    socket.emit("MATRIX", matrix)
+    setInterval(function () {
+        PlayGame();
+    }, 1000);
+})
